@@ -3,6 +3,7 @@ package problemaMochila;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class Algoritmo_Guloso {
@@ -19,10 +20,12 @@ public class Algoritmo_Guloso {
 
 		@Override
 		public String toString() {
-			return "Item{" + "peso=" + peso + ", valor=" + valor + ", balanco=" + balanco + '}';
+			return "Item{" + "peso= " + peso + ", valor= " + valor + ", balanco= " + balanco + '}';
 		}
 	}
 
+	static public double tempo = 0;
+	static ArrayList<Double> listTemp = new ArrayList<>();
 	static List<Item> items = new ArrayList<>();
 
 	public static void gerarItems(int quantidade) {
@@ -56,16 +59,31 @@ public class Algoritmo_Guloso {
 	}
 
 	public static void calcularTempoMochilaGulosa(List<Item> mochila) {
+		System.out.println("");
 		long tempoInicial = System.nanoTime();
 		imprimirItensmochila(mochila);
 		long tempoFinal = System.nanoTime();
-		System.out.println("Tempo do algoritmo tal: " + (tempoFinal - tempoInicial));
+		tempo = (tempoFinal - tempoInicial) / 1_000_000_000d;
+		System.out.println("Tempo do algoritmo: " + tempo);
+		listTemp.add(tempo);
 	}
 
 	public static void main(String[] args) {
-		gerarItems(60);
-		List<Item> mochila = algoritmoGuloso(60);
-		calcularTempoMochilaGulosa(mochila);
+		Locale.setDefault(Locale.US);
+		gerarItems(100);
+		List<Item> mochila = algoritmoGuloso(50);
+		for (int i = 0; i < 5; i++) {
+			calcularTempoMochilaGulosa(mochila);
+		}
+
+		double total = 0;
+
+		for (double temp : listTemp) {
+			total += temp;
+		}
+
+		System.out.println("");
+		System.out.println("Media do tempo dos algoritmos: " + total / 5);
 	}
 
 }

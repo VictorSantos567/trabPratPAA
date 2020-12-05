@@ -2,8 +2,8 @@ package problemaMochila;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
-
 
 public class Forca_Bruta {
 
@@ -18,6 +18,8 @@ public class Forca_Bruta {
 		}
 	}
 
+	static public double tempo = 0;
+	static ArrayList<Double> listTemp = new ArrayList<>();
 	static List<Item> items = new ArrayList<>();
 
 	public static void gerarItems(int quantidade) {
@@ -50,18 +52,33 @@ public class Forca_Bruta {
 	}
 
 	public static void calcularTempoMochilaforcabruta(int c, int n) {
+		System.out.println("");
 		long tempoInicial = System.nanoTime();
 		System.out.println("Valor máximo conseguido na mochila = " + mochila(c, n));
 		long tempoFinal = System.nanoTime();
-		System.out.println("Tempo do algoritmo tal: " + (tempoFinal - tempoInicial));
+		tempo = (tempoFinal - tempoInicial) / 1_000_000_000d;
+		System.out.println("Tempo do algoritmo: " + tempo);
+		listTemp.add(tempo);
 	}
 
 	public static void main(String args[]) {
+		Locale.setDefault(Locale.US);
 		Random random = new Random();
-		gerarItems(60);
-		int c = random.nextInt(60);
+		gerarItems(25);
+		int c = random.nextInt(50);
 		int n = items.size();
 		// System.out.println("Valor máximo conseguido na mochila = " + mochila(c, n));
-		calcularTempoMochilaforcabruta(c, n);
+		for (int i = 0; i < 5; i++) {
+			calcularTempoMochilaforcabruta(c, n);
+		}
+
+		double total = 0;
+
+		for (double temp : listTemp) {
+			total += temp;
+		}
+
+		System.out.println("");
+		System.out.println("Media do tempo dos algoritmos: " + total / 5);
 	}
 }
